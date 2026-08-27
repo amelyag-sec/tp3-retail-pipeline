@@ -1,3 +1,4 @@
+import os
 import psycopg2
 from psycopg2.extras import execute_values
 import pandas as pd
@@ -5,8 +6,8 @@ from clean_transactions import load_reference_data, load_all_transactions, clean
 
 
 def get_connection():
-    return psycopg2.connect(host="localhost", dbname="retail_dw", user="postgres", password="postgres")
-
+    host = os.environ.get("POSTGRES_HOST", "localhost")
+    return psycopg2.connect(host=host, dbname="retail_dw", user="postgres", password="postgres")
 
 def load_dimensions(conn, stores, products, customers):
     with conn.cursor() as cur:
